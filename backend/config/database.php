@@ -6,7 +6,7 @@
     private $db_name = "employee_management";
     private $username = "root";
     private $password = "";
-    private $conn;
+    public $conn;
 
     public function getConnection()
     {
