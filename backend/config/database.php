@@ -2,14 +2,17 @@
 
  class Database
  {
+
+
     private $host = "localhost";
     private $db_name = "employee_management";
     private $username = "root";
-    private $password = "";
+    private $password = "root";
     public $conn;
 
     public function getConnection()
     {
+      
         $this->conn = null;
 
         try {

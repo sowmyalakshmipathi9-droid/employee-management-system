@@ -1,21 +1,35 @@
 <?php
-require_once "../api/employee.php";
-header("content_type: application/json");
 
-class employeeController {
+header("Content-Type: application/json");
 
-    public function index(){
-        if ($employee) {
+class EmployeeController
+{
+    private $employee;
+
+    public function __construct($db)
+    {
+        // Create Employee model here
+        $this->employee = new Employee($db);
+    }
+
+    public function index()
+    {
+        // Get data from model
+        $employees = $this->employee->getEmployees();
+            // Check if data exists
+        if($employees) {
+            // Return JSON
             echo json_encode([
-                "status" => true,
-                "data" => $employee
+                "status" => 200,
+                "data" => $employees
             ]);
-        
-            } else {
-                echo json_encode([
-                    "status" => true,
-                    "Message" => "No employee found"
-                ]);
+        } else {
+
+            echo json_encode([
+                "status" => 404,
+                "message" => "No employees found."
+            ]);
+
         }
     }
 }

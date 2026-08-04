@@ -4,9 +4,11 @@ require_once "../config/database.php";
 class Employee {
     private $conn;
 
-    public function _construct($db)
+    public function __construct($db)
     {
-        $this->$conn = $db;
+        // Print "Employee model created";
+        $this->conn = $db;
+        // print_r($this->conn);
     }
 
     public function getEmployees() {
@@ -20,10 +22,12 @@ class Employee {
                 JOIN departments dept
                 ON e.department_id = dept.id
                 LIMIT 5";
+        // Print "SQL query: " . $sql . "\n";
 
         $statement = $this->conn->prepare($sql);
         $statement->execute();
 
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
