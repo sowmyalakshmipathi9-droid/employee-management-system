@@ -10,4 +10,23 @@ $database = new Database();
 $db = $database->getConnection();
 
 $controller = new EmployeeController($db);
-$controller->index();
+// echo $_SERVER['REQUEST_METHOD'];
+// exit;
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+
+    $controller->index();
+
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $controller->createEmployee($data);
+
+} else {
+    
+    http_response_code(405);
+
+    echo json_encode([
+        "message" => "Method Not Allowed"
+    ]);
+}

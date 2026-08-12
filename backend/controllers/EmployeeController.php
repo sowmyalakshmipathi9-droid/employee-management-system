@@ -32,4 +32,76 @@ class EmployeeController
 
         }
     }
+
+    public function createEmployee($data){
+
+        $employee_code = $data['employee_code'];
+        $first_name = $data['first_name'];
+        $email = $data['email'];
+        $department_id = $data['department_id'];
+
+        if (empty($employee_code)) {
+
+        http_response_code(400);
+
+            echo json_encode([
+                "status" => 400,
+                "message" => "Employee code is required."
+            ]);
+
+            return;
+        }
+
+        if (empty($first_name)) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                "status" => 400,
+                "message" => "First name is required."
+            ]);
+
+            return;
+        }
+                if (empty($email)) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                "status" => 400,
+                "message" => "Email is required."
+            ]);
+
+            return;
+        }
+
+        if (empty($department_id)) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                "status" => 400,
+                "message" => "Department is required."
+            ]);
+
+            return;
+        } 
+             // Call the model to create employee
+            $result = $this->employee->createEmployee($employee_code, $first_name, $email, $department_id);
+            if($result){
+                http_response_code(201);
+                echo json_encode([
+                    "status" => 201,
+                    "message" => "Employee created successfully."
+                ]);
+                return;
+            } else {
+                http_response_code(500); 
+                echo json_encode([
+                    "status" => 500,
+                    "message" => "Failed to create employee."
+                ]);
+            }
+       
+    }
 }
