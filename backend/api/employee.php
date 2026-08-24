@@ -15,8 +15,16 @@ $controller = new EmployeeController($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 
-    $controller->index();
+   if (isset($_GET['id'])) {
 
+        // GET one employee
+        $controller->show($_GET['id']);
+
+    } else {
+
+        // GET all employees
+        $controller->index();
+    }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $data = json_decode(file_get_contents("php://input"), true);

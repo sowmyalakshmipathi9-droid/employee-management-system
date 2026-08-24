@@ -104,4 +104,27 @@ class EmployeeController
             }
        
     }
+
+    public function show($id){
+    // get employee from model
+        // $employees = $this->employee->getEmployees();
+        $employee = $this->employee->getEmployeeById($id);
+    // Check whether the employee exists
+    if($employee){
+        // return JSON response with employee data
+        http_response_code(200);
+        echo json_encode([
+            "status" => 200,
+            "data" => $employee
+        ]);
+    } else {
+        // return JSON response with error message
+        http_response_code(404);
+        echo json_encode([
+            "status" => 404,
+            "message" => "Employee not found."
+        ]);
+    }
+    }
+
 }

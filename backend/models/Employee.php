@@ -39,15 +39,24 @@ class Employee {
          $statement->bindParam(':email', $email);
         $statement->bindParam(':department_id', $department_id);
         try {
-    $statement->execute();
-    return true;
-} catch (PDOException $e) {
-    echo json_encode([
-        "status" => 500,
-        "message" => $e->getMessage()
-    ]);
-    return false;
-}
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo json_encode([
+                "status" => 500,
+                "message" => $e->getMessage()
+            ]);
+            return false;
+        }
     }
+
+    public function getEmployeeById($id) {
+        $sql = "SELECT * FROM employees WHERE id = :id";
+        $statement = $this->conn->prepare($sql);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
 
 }
