@@ -36,7 +36,7 @@ class Employee {
         $statement = $this->conn->prepare($sql);
         $statement->bindParam(':employee_code', $employee_code);
         $statement->bindParam(':first_name', $first_name);
-         $statement->bindParam(':email', $email);
+        $statement->bindParam(':email', $email);
         $statement->bindParam(':department_id', $department_id);
         try {
             $statement->execute();
@@ -57,6 +57,23 @@ class Employee {
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function updateEmployee($id, $employee_code, $first_name, $email, $department_id) {
+    $sql = "UPDATE employees SET employee_code = :employee_code, first_name = :first_name, email = :email, department_id = :department_id WHERE id = :id";
+    $statement = $this->conn->prepare($sql);
+    $statement->bindParam(':id', $id);
+    $statement->bindParam(':employee_code', $employee_code);
+    $statement->bindParam(':first_name', $first_name);
+    $statement->bindParam(':email', $email);
+    $statement->bindParam(':department_id', $department_id);
+
+    try {
+        $statement->execute();
+        return true;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
 
 
 }

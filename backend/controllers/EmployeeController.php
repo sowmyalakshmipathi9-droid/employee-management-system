@@ -110,21 +110,53 @@ class EmployeeController
         // $employees = $this->employee->getEmployees();
         $employee = $this->employee->getEmployeeById($id);
     // Check whether the employee exists
-    if($employee){
-        // return JSON response with employee data
-        http_response_code(200);
-        echo json_encode([
-            "status" => 200,
-            "data" => $employee
-        ]);
-    } else {
-        // return JSON response with error message
-        http_response_code(404);
-        echo json_encode([
-            "status" => 404,
-            "message" => "Employee not found."
-        ]);
+        if($employee){
+            // return JSON response with employee data
+            http_response_code(200);
+            echo json_encode([
+                "status" => 200,
+                "data" => $employee
+            ]);
+        } else {
+            // return JSON response with error message
+            http_response_code(404);
+            echo json_encode([
+                "status" => 404,
+                "message" => "Employee not found."
+            ]);
+        }
     }
+
+    public function updateEmployee($id, $data) {
+        $employee = $this->employee->getEmployeeById($id);
+        if (!$employee) {
+            http_response_code(404);
+            echo json_encode([
+                "status" => 404,
+                "message" => "Employee not found."
+            ]);
+            return;
+        }
+        $employee_code = $data['employee_code'] ?? $employee['employee_code'];
+        $first_name = $data['first_name'] ?? $employee['first_name'];
+        $email = $data['email'] ?? $employee['email'];
+        $department_id = $data['department_id'] ?? $employee['department_id'];
+
+        $result = $this->employee->updateEmployee($id, $employee_code, $first_name, $email, $department_id);
+        if ($result){
+            http_response_code(200);
+            echo json_encode([
+                "status" => 200,
+                "message" => "Employee updated successfully."
+            ]);
+        } else {
+            http_response_code(500);
+
+            echo json_encode([
+                "status" => 500,
+                "message" => "Failed to update employee."
+            ]);
+        }
     }
 
 }

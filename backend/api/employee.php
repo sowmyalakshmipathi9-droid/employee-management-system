@@ -30,6 +30,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $data = json_decode(file_get_contents("php://input"), true);
     $controller->createEmployee($data);
 
+} elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+
+    if (!isset($_GET['id'])) {
+
+        http_response_code(400);
+
+        echo json_encode([
+            "status" => 400,
+            "message" => "Employee ID is required."
+        ]);
+
+        return;
+    }
+
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    $controller->updateEmployee($_GET['id'], $data);
+
 } else {
     
     http_response_code(405);
