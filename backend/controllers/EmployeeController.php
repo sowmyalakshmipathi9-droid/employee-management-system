@@ -105,6 +105,33 @@ class EmployeeController
        
     }
 
+    public function deleteEmployee($id) {
+        $employee = $this->employee->getEmployeeById($id);
+        if(!$employee) {
+            http_response_code(404);
+            echo json_encode([
+                "status" => 404,
+                "message" => "Employee not found."
+            ]);
+            return;
+        }
+        $result = $this->employee->deleteEmployee($id);
+        if($result) {
+            http_response_code(200);
+            echo json_encode([
+                "status" => 200,
+                "message" => "Employee deleted successfully."
+
+            ]);
+            return;
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                "status" => 500,
+                "message" => "Failed to delete employee."
+            ]);
+        }
+    }
     public function show($id){
     // get employee from model
         // $employees = $this->employee->getEmployees();

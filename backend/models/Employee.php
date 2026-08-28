@@ -50,6 +50,18 @@ class Employee {
         }
     }
 
+    public function deleteEmployee($id) {
+        $sql = "DELETE FROM employees WHERE id = :id";
+        $statement = $this->conn->prepare($sql);
+        $statement->bindParam(':id', $id);
+        try {
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function getEmployeeById($id) {
         $sql = "SELECT * FROM employees WHERE id = :id";
         $statement = $this->conn->prepare($sql);

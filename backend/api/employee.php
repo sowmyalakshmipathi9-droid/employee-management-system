@@ -40,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
             "status" => 400,
             "message" => "Employee ID is required."
         ]);
-
         return;
     }
 
@@ -48,7 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 
     $controller->updateEmployee($_GET['id'], $data);
 
-} else {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    if(!isset($_GET['id'])) {
+        http_response_code(400);
+        echo json_encode([
+            "status" => 400,
+            "message" => "Employee ID is required."
+        ]);
+        return;
+    }
+    $controller->deleteEmployee($_GET['id']);
+} 
+else {
     
     http_response_code(405);
 
