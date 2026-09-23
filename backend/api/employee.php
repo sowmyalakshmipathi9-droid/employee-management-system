@@ -22,7 +22,10 @@ $controller = new EmployeeController($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 
-   if (isset($_GET['id'])) {
+   if (isset($_GET['departments'])) {
+        $controller->getDepartments();
+
+    } elseif (isset($_GET['id'])) {
 
         // GET one employee
         $controller->show($_GET['id']);
@@ -30,11 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     } else {
 
         // GET all employees
-        $controller->index();
+        $departmentId = isset($_GET['department_id']) && $_GET['department_id'] !== '' ? $_GET['department_id'] : null;
+        $controller->index($departmentId);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $data = json_decode(file_get_contents("php://input"), true);
+
+    if (isset($data['department_name']) && !isset($data['employee_code'])) {
+        $controller->createDepartment($data);
+        return;
+    }
+
     $controller->createEmployee($data);
 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {

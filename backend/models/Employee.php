@@ -11,23 +11,54 @@ class Employee {
         // print_r($this->conn);
     }
 
-    public function getEmployees() {
-
+    public function getEmployees($departmentId = null) {
         $sql = "SELECT
                     e.id,
                     e.employee_code,
                     e.first_name,
+                    e.email,
+                    e.department_id,
                     dept.department_name
                 FROM employees e
                 JOIN departments dept
-                ON e.department_id = dept.id
-                ORDER BY e.id ASC";
-        // Print "SQL query: " . $sql . "\n";
+                ON e.department_id = dept.id";
 
+        if ($departmentId !== null && $departmentId !== '') {
+            $sql .= " WHERE e.department_id = :department_id";
+        }
+
+        $sql .= " ORDER BY e.id ASC";
+
+        $statement = $this->conn->prepare($sql);
+
+        if ($departmentId !== null && $departmentId !== '') {
+            $statement->bindParam(':department_id', $departmentId, PDO::PARAM_INT);
+        }
+
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDepartments() {
+        $sql = "SELECT id, department_name FROM departments ORDER BY department_name ASC";
         $statement = $this->conn->prepare($sql);
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createDepartment($department_name) {
+        $sql = "INSERT INTO departments (department_name) VALUES (:department_name)";
+        $statement = $this->conn->prepare($sql);
+        $statement->bindParam(':department_name', $department_name);
+
+        try {
+            $statement->execute();
+            return (int) $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function createEmployee($employee_code, $first_name, $email, $department_id) {

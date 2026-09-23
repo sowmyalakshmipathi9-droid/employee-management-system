@@ -52,7 +52,7 @@ function App() {
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div> */}
         <div>
-          <h1>Employee Management System</h1>
+          <h1>Employee Dashboard</h1>
           <EmployeeList />
           {/* <p>
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>

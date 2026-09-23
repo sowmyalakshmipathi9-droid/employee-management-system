@@ -12,10 +12,10 @@ class EmployeeController
         $this->employee = new Employee($db);
     }
 
-    public function index()
+    public function index($departmentId = null)
     {
         // Get data from model
-        $employees = $this->employee->getEmployees();
+        $employees = $this->employee->getEmployees($departmentId);
             // Check if data exists
         if($employees) {
             // Return JSON
@@ -31,6 +31,58 @@ class EmployeeController
             ]);
 
         }
+    }
+
+    public function getDepartments()
+    {
+        $departments = $this->employee->getDepartments();
+
+        if ($departments) {
+            echo json_encode([
+                "status" => 200,
+                "data" => $departments
+            ]);
+        } else {
+            echo json_encode([
+                "status" => 404,
+                "message" => "No departments found."
+            ]);
+        }
+    }
+
+    public function createDepartment($data)
+    {
+        $department_name = trim((string)($data['department_name'] ?? ''));
+
+        if ($department_name === '') {
+            http_response_code(400);
+            echo json_encode([
+                "status" => 400,
+                "message" => "Department name is required."
+            ]);
+            return;
+        }
+
+        $result = $this->employee->createDepartment($department_name);
+
+        if ($result) {
+            http_response_code(201);
+            echo json_encode([
+                "status" => 201,
+                "message" => "Department created successfully.",
+                "data" => [
+                    "id" => $result,
+                    "department_name" => $department_name
+                ]
+            ]);
+            return;
+        }
+
+        http_response_code(500);
+        echo json_encode([
+            "status" => 500,
+            "message" => "Failed to create department."
+        ]);
     }
 
     public function createEmployee($data){
