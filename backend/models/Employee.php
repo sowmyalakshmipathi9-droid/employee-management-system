@@ -21,7 +21,7 @@ class Employee {
                 FROM employees e
                 JOIN departments dept
                 ON e.department_id = dept.id
-                LIMIT 5";
+                ORDER BY e.id ASC";
         // Print "SQL query: " . $sql . "\n";
 
         $statement = $this->conn->prepare($sql);
