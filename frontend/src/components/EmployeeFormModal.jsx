@@ -50,6 +50,17 @@ const EmployeeFormModal = ({
             </label>
 
             <label>
+              Last Name
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={onChange}
+                placeholder="Doe"
+              />
+            </label>
+
+            <label>
               Email
               <input
                 type="email"
@@ -58,6 +69,17 @@ const EmployeeFormModal = ({
                 onChange={onChange}
                 placeholder="john@example.com"
                 required
+              />
+            </label>
+
+            <label>
+              Phone
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={onChange}
+                placeholder="9876543210"
               />
             </label>
 
@@ -75,6 +97,63 @@ const EmployeeFormModal = ({
                     {department.department_name}
                   </option>
                 ))}
+              </select>
+            </label>
+
+            <label>
+              Designation
+              <input
+                type="text"
+                name="designation"
+                value={formData.designation}
+                onChange={onChange}
+                placeholder="Software Engineer"
+              />
+            </label>
+
+            <label>
+              Salary
+              <input
+                type="number"
+                name="salary"
+                value={formData.salary}
+                onChange={onChange}
+                placeholder="1200000"
+                min="0"
+                step="0.01"
+              />
+            </label>
+
+            <label>
+              Joining Date
+              <input
+                type="date"
+                name="joining_date"
+                value={formData.joining_date}
+                onChange={onChange}
+              />
+            </label>
+
+            <label>
+              Profile Image URL
+              <input
+                type="url"
+                name="profile_image"
+                value={formData.profile_image}
+                onChange={onChange}
+                placeholder="https://example.com/profile.jpg"
+              />
+            </label>
+
+            <label>
+              Status
+              <select
+                name="status"
+                value={formData.status}
+                onChange={onChange}
+              >
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
             </label>
           </div>

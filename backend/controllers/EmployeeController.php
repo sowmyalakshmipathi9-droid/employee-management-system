@@ -87,10 +87,17 @@ class EmployeeController
 
     public function createEmployee($data){
 
-        $employee_code = $data['employee_code'];
-        $first_name = $data['first_name'];
-        $email = $data['email'];
-        $department_id = $data['department_id'];
+        $employee_code = $data['employee_code'] ?? '';
+        $first_name = $data['first_name'] ?? '';
+        $last_name = $data['last_name'] ?? null;
+        $email = $data['email'] ?? '';
+        $phone = $data['phone'] ?? null;
+        $department_id = $data['department_id'] ?? null;
+        $designation = $data['designation'] ?? null;
+        $salary = $data['salary'] ?? null;
+        $joining_date = $data['joining_date'] ?? null;
+        $profile_image = $data['profile_image'] ?? null;
+        $status = $data['status'] ?? 'Active';
 
         if (empty($employee_code)) {
 
@@ -139,7 +146,7 @@ class EmployeeController
             return;
         } 
              // Call the model to create employee
-            $result = $this->employee->createEmployee($employee_code, $first_name, $email, $department_id);
+            $result = $this->employee->createEmployee($employee_code, $first_name, $last_name, $email, $phone, $department_id, $designation, $salary, $joining_date, $profile_image, $status);
             if($result){
                 http_response_code(201);
                 echo json_encode([
@@ -218,10 +225,17 @@ class EmployeeController
         }
         $employee_code = $data['employee_code'] ?? $employee['employee_code'];
         $first_name = $data['first_name'] ?? $employee['first_name'];
+        $last_name = $data['last_name'] ?? ($employee['last_name'] ?? null);
         $email = $data['email'] ?? $employee['email'];
+        $phone = $data['phone'] ?? ($employee['phone'] ?? null);
         $department_id = $data['department_id'] ?? $employee['department_id'];
+        $designation = $data['designation'] ?? ($employee['designation'] ?? null);
+        $salary = $data['salary'] ?? ($employee['salary'] ?? null);
+        $joining_date = $data['joining_date'] ?? ($employee['joining_date'] ?? null);
+        $profile_image = $data['profile_image'] ?? ($employee['profile_image'] ?? null);
+        $status = $data['status'] ?? ($employee['status'] ?? 'Active');
 
-        $result = $this->employee->updateEmployee($id, $employee_code, $first_name, $email, $department_id);
+        $result = $this->employee->updateEmployee($id, $employee_code, $first_name, $last_name, $email, $phone, $department_id, $designation, $salary, $joining_date, $profile_image, $status);
         if ($result){
             http_response_code(200);
             echo json_encode([

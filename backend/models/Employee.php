@@ -16,8 +16,16 @@ class Employee {
                     e.id,
                     e.employee_code,
                     e.first_name,
+                    e.last_name,
                     e.email,
+                    e.phone,
                     e.department_id,
+                    e.designation,
+                    e.salary,
+                    e.joining_date,
+                    e.profile_image,
+                    e.status,
+                    e.created_at,
                     dept.department_name
                 FROM employees e
                 JOIN departments dept
@@ -61,14 +69,21 @@ class Employee {
         }
     }
 
-    public function createEmployee($employee_code, $first_name, $email, $department_id) {
+    public function createEmployee($employee_code, $first_name, $last_name, $email, $phone, $department_id, $designation, $salary, $joining_date, $profile_image, $status) {
 
-        $sql = "INSERT INTO employees (employee_code, first_name, email, department_id) VALUES (:employee_code, :first_name, :email, :department_id)";
+        $sql = "INSERT INTO employees (employee_code, first_name, last_name, email, phone, department_id, designation, salary, joining_date, profile_image, status) VALUES (:employee_code, :first_name, :last_name, :email, :phone, :department_id, :designation, :salary, :joining_date, :profile_image, :status)";
         $statement = $this->conn->prepare($sql);
         $statement->bindParam(':employee_code', $employee_code);
         $statement->bindParam(':first_name', $first_name);
+        $statement->bindParam(':last_name', $last_name);
         $statement->bindParam(':email', $email);
+        $statement->bindParam(':phone', $phone);
         $statement->bindParam(':department_id', $department_id);
+        $statement->bindParam(':designation', $designation);
+        $statement->bindParam(':salary', $salary);
+        $statement->bindParam(':joining_date', $joining_date);
+        $statement->bindParam(':profile_image', $profile_image);
+        $statement->bindParam(':status', $status);
         try {
             $statement->execute();
             return true;
@@ -101,14 +116,21 @@ class Employee {
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateEmployee($id, $employee_code, $first_name, $email, $department_id) {
-    $sql = "UPDATE employees SET employee_code = :employee_code, first_name = :first_name, email = :email, department_id = :department_id WHERE id = :id";
+    public function updateEmployee($id, $employee_code, $first_name, $last_name, $email, $phone, $department_id, $designation, $salary, $joining_date, $profile_image, $status) {
+    $sql = "UPDATE employees SET employee_code = :employee_code, first_name = :first_name, last_name = :last_name, email = :email, phone = :phone, department_id = :department_id, designation = :designation, salary = :salary, joining_date = :joining_date, profile_image = :profile_image, status = :status WHERE id = :id";
     $statement = $this->conn->prepare($sql);
     $statement->bindParam(':id', $id);
     $statement->bindParam(':employee_code', $employee_code);
     $statement->bindParam(':first_name', $first_name);
+    $statement->bindParam(':last_name', $last_name);
     $statement->bindParam(':email', $email);
+    $statement->bindParam(':phone', $phone);
     $statement->bindParam(':department_id', $department_id);
+    $statement->bindParam(':designation', $designation);
+    $statement->bindParam(':salary', $salary);
+    $statement->bindParam(':joining_date', $joining_date);
+    $statement->bindParam(':profile_image', $profile_image);
+    $statement->bindParam(':status', $status);
 
     try {
         $statement->execute();
