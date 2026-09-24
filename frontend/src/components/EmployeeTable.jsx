@@ -17,8 +17,8 @@ const EmployeeTable = ({ rows, onView, onEdit, onDelete }) => {
           <tr key={employee.id}>
             <td>{employee.id}</td>
             <td>{employee.employee_code}</td>
-            <td>{employee.first_name}</td>
-            <td>{employee.department_name}</td>
+            <td>{[employee.first_name, employee.last_name].filter(Boolean).join(' ') || 'Not available'}</td>
+            <td>{employee.department_name || 'Not available'}</td>
             <td>
               <button
                 type="button"

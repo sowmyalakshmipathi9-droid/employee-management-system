@@ -1,7 +1,27 @@
+import { formatEmployeeValue, normalizeEmployeeRecord } from '../utils/employeeData.js';
+
 const EmployeeProfileModal = ({ employee, onClose }) => {
   if (!employee) {
     return null;
   }
+
+  const normalizedEmployee = normalizeEmployeeRecord(employee);
+  const profileFields = [
+    { label: 'Employee ID', value: normalizedEmployee.id },
+    { label: 'Employee Code', value: normalizedEmployee.employee_code },
+    { label: 'First Name', value: normalizedEmployee.first_name },
+    { label: 'Last Name', value: normalizedEmployee.last_name },
+    { label: 'Email', value: normalizedEmployee.email },
+    { label: 'Phone', value: normalizedEmployee.phone },
+    { label: 'Department ID', value: normalizedEmployee.department_id },
+    { label: 'Department', value: normalizedEmployee.department_name },
+    { label: 'Designation', value: normalizedEmployee.designation },
+    { label: 'Salary', value: normalizedEmployee.salary },
+    { label: 'Joining Date', value: normalizedEmployee.joining_date },
+    { label: 'Profile Image', value: normalizedEmployee.profile_image },
+    { label: 'Status', value: normalizedEmployee.status },
+    { label: 'Created At', value: normalizedEmployee.created_at },
+  ];
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -14,30 +34,12 @@ const EmployeeProfileModal = ({ employee, onClose }) => {
         </div>
 
         <div className="profile-grid">
-          <div className="profile-row">
-            <span>Employee ID</span>
-            <strong>{employee.id}</strong>
-          </div>
-          <div className="profile-row">
-            <span>Employee Code</span>
-            <strong>{employee.employee_code}</strong>
-          </div>
-          <div className="profile-row">
-            <span>Full Name</span>
-            <strong>{employee.first_name}</strong>
-          </div>
-          <div className="profile-row">
-            <span>Email</span>
-            <strong>{employee.email || 'Not available'}</strong>
-          </div>
-          <div className="profile-row">
-            <span>Department ID</span>
-            <strong>{employee.department_id || 'Not available'}</strong>
-          </div>
-          <div className="profile-row">
-            <span>Department</span>
-            <strong>{employee.department_name || 'Not available'}</strong>
-          </div>
+          {profileFields.map((field) => (
+            <div key={field.label} className="profile-row">
+              <span>{field.label}</span>
+              <strong>{formatEmployeeValue(field.value)}</strong>
+            </div>
+          ))}
         </div>
       </div>
     </div>

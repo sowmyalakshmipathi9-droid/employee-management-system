@@ -12,13 +12,9 @@ import EmployeeFilterToolbar from './EmployeeFilterToolbar.jsx';
 import EmployeeFormModal from './EmployeeFormModal.jsx';
 import EmployeeProfileModal from './EmployeeProfileModal.jsx';
 import Pagination from './Pagination.jsx';
+import { getEmployeeFormDefaults, normalizeEmployeeRecord } from '../utils/employeeData.js';
 
-const initialFormState = {
-  employee_code: '',
-  first_name: '',
-  email: '',
-  department_id: '',
-};
+const initialFormState = getEmployeeFormDefaults();
 
 const ITEMS_PER_PAGE = 10;
 
@@ -151,6 +147,7 @@ function EmployeeList() {
     return (
       employee.employee_code?.toLowerCase().includes(query) ||
       employee.first_name?.toLowerCase().includes(query) ||
+      employee.last_name?.toLowerCase().includes(query) ||
       employee.department_name?.toLowerCase().includes(query)
     );
   });
@@ -166,14 +163,14 @@ function EmployeeList() {
   }, [selectedDepartment, searchTerm]);
 
   const resetForm = () => {
-    setFormData(initialFormState);
+    setFormData(getEmployeeFormDefaults());
     setEditingId(null);
   };
 
   const openAddModal = () => {
     const generatedCode = generateEmployeeCode(employees);
     setFormData({
-      ...initialFormState,
+      ...getEmployeeFormDefaults(),
       employee_code: generatedCode,
     });
     setEditingId(null);
@@ -184,12 +181,7 @@ function EmployeeList() {
 
   const openEditModal = (employee) => {
     setEditingId(employee.id);
-    setFormData({
-      employee_code: employee.employee_code,
-      first_name: employee.first_name,
-      email: employee.email || '',
-      department_id: employee.department_id || '',
-    });
+    setFormData(normalizeEmployeeRecord(employee));
     setError('');
     setSuccessMessage('');
     setIsModalOpen(true);
@@ -232,7 +224,14 @@ function EmployeeList() {
       const payload = {
         ...formData,
         department_id: Number(formData.department_id),
+        salary: formData.salary === '' ? null : Number(formData.salary),
+        status: formData.status || 'Active',
+        profile_image: formData.profile_image || null,
       };
+
+      delete payload.id;
+      delete payload.created_at;
+      delete payload.department_name;
 
       if (editingId) {
         await updateEmployee(editingId, payload);
